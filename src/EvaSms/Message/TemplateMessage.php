@@ -60,6 +60,7 @@ class TemplateMessage implements MessageInterface
     public function __toString()
     {
         return json_encode(array(
+            'type' => MessageInterface::TYPE_TEMPLATE,
             'recipient' => $this->recipient,
             'templateId' => $this->templateId,
             'vars' => $this->vars,

@@ -68,7 +68,7 @@ class Submail implements ProviderInterface
             'vars' => json_encode($message->getVars()),
             'timestamp' => time(),
             'sige_type' => 'md5',
-        );
+        )
         $signature = $this->getSignature($params);
         $params['signature'] = $signature;
         */

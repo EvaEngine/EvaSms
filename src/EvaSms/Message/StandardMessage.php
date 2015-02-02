@@ -45,6 +45,7 @@ class StandardMessage implements MessageInterface
     public function __toString()
     {
         return json_encode(array(
+            'type' => MessageInterface::TYPE_STANDARD,
             'recipient' => $this->recipient,
             'body' => $this->body,
         ));

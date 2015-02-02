@@ -10,9 +10,9 @@ namespace Eva\EvaSms\Message;
 
 interface MessageInterface
 {
-    const STANDARD_MESSAGE = 'STANDARD_MESSAGE';
+    const TYPE_STANDARD = 'STANDARD_MESSAGE';
 
-    const TEMPLATE_MESSAGE = 'TEMPLATE_MESSAGE';
+    const TYPE_TEMPLATE = 'TEMPLATE_MESSAGE';
 
     public function setRecipient($recipient);
 

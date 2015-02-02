@@ -25,7 +25,7 @@ class Sender
     /**
      * @var float
      */
-    protected static $defaultTimeout = 0.3;
+    protected static $defaultTimeout = 1;
 
     /**
      * @var string
@@ -63,7 +63,7 @@ class Sender
         }
 
         $client = new HttpClient();
-        //$client->setDefaultOption('timeout', self::$defaultTimeout);
+        $client->setDefaultOption('timeout', self::$defaultTimeout);
         return self::$httpClient = $client;
     }
 
