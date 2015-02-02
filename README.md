@@ -7,12 +7,31 @@
 - [Submail](http://submail.cn/)
 
 
+## 使用方法
+
+在composer.json中加入`"evaengine/eva-sms": "dev-master"`
+
+
 代码示例:
 
 ``` php
 $sender = new \Eva\EvaSms\Sender();
+$sender::setDefaultTimeout(30); //设置默认超时时间，可省略
 $sender->setProvider(new \Eva\EvaSms\Providers\Submail('AppID', 'AppKey'));
-$result = $sender->sendTemplateMessage('PhoneNumber', 'TemplateID', ['number' => '765321']);
-var_dump($result);
-echo $result; //Result could convert into string
+
+//基于模版发送短信
+$result = $sender->sendTemplateMessage(
+    'PhoneNumber', //手机号,目前只支持带国际区号的完整手机号，如 +8618512345678
+    'TemplateID', //模版ID
+    ['number' => '765321'] //模版变量
+);
+
+//发送自定义短信
+$result = $sender->sendStandardMessage(
+    'PhoneNumber', //手机号
+    'ABC', //短信内容
+);
+
+var_dump($result); //显示发送结果
+echo $result; //发送结果可以转换为字符串方便Log纪录
 ```
