@@ -17,4 +17,6 @@ interface MessageInterface
     public function setRecipient($recipient);
 
     public function getRecipient();
+
+    public function __toString();
 }

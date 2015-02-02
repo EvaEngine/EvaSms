@@ -56,4 +56,13 @@ class TemplateMessage implements MessageInterface
         $this->templateId = $templateId;
         $this->vars = $vars;
     }
+
+    public function __toString()
+    {
+        return json_encode(array(
+            'recipient' => $this->recipient,
+            'templateId' => $this->templateId,
+            'vars' => $this->vars,
+        ));
+    }
 }

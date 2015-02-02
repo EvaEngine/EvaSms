@@ -14,7 +14,8 @@ use Eva\EvaSms\Exception\UnsupportedException;
 use Eva\EvaSms\Message\MessageInterface;
 use Eva\EvaSms\Message\StandardMessage;
 use Eva\EvaSms\Message\TemplateMessage;
-use Eva\EvaSms\Result\StandResult;
+use Eva\EvaSms\Result\ResultInterface;
+use Eva\EvaSms\Result\StandardResult;
 use Eva\EvaSms\Sender;
 use Guzzle\Http\Client;
 
@@ -62,7 +63,7 @@ class Submail implements ProviderInterface
         /*
         $params = array(
             'appid' => $this->appid,
-            'to' => '18501760817',
+            'to' => $number,
             'project' => $message->getTemplateId(),
             'vars' => json_encode($message->getVars()),
             'timestamp' => time(),
@@ -74,7 +75,16 @@ class Submail implements ProviderInterface
 
         $client = Sender::getHttpClient();
         $response = $client->post(self::API_URL, [], $params)->send();
-        return new StandResult();
+        $responseObj = $response->json();
+        $result = new StandardResult($message, $response);
+        if (isset($responseObj->status)) {
+            if ($responseObj->status == 'success') {
+                $result->setStatus(ResultInterface::STATUS_DELIVERED);
+            } elseif ($responseObj->status == 'error') {
+                $result->setStatus(ResultInterface::STATUS_FAILED);
+            }
+        }
+        return $result;
     }
 
     protected function getSignature($params)
@@ -86,7 +96,6 @@ class Submail implements ProviderInterface
             $signature[] = $key . '=' . $value;
         }
         $signature = implode('&', $signature);
-        var_dump($signature);
         return md5($this->appid . $this->appkey . $signature . $this->appid . $this->appkey);
     }
 

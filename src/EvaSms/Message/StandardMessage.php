@@ -41,4 +41,12 @@ class StandardMessage implements MessageInterface
         $this->recipient = $recipient;
         $this->body = $body;
     }
+
+    public function __toString()
+    {
+        return json_encode(array(
+            'recipient' => $this->recipient,
+            'body' => $this->body,
+        ));
+    }
 }
