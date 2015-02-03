@@ -8,6 +8,10 @@
 
 namespace Eva\EvaSms\Exception;
 
+/**
+ * Class RuntimeException
+ * @package Eva\EvaSms\Exception
+ */
 class RuntimeException extends \RuntimeException
 {
 

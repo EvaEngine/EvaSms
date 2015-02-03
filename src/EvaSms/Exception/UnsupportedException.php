@@ -8,6 +8,10 @@
 
 namespace Eva\EvaSms\Exception;
 
+/**
+ * Class UnsupportedException
+ * @package Eva\EvaSms\Exception
+ */
 class UnsupportedException extends \InvalidArgumentException
 {
 

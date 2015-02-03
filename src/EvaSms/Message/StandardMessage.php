@@ -8,23 +8,44 @@
 
 namespace Eva\EvaSms\Message;
 
+/**
+ * Class StandardMessage
+ * @package Eva\EvaSms\Message
+ */
 class StandardMessage implements MessageInterface
 {
+    /**
+     * @var string Mobile phone number
+     */
     protected $recipient;
 
+    /**
+     * @var string Mobile content
+     */
     protected $body;
 
+    /**
+     * @param $recipient
+     * @return $this
+     */
     public function setRecipient($recipient)
     {
         $this->recipient = $recipient;
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getRecipient()
     {
         return $this->recipient;
     }
 
+    /**
+     * @param $body
+     * @return $this
+     */
     public function setBody($body)
     {
         $this->body = $body;

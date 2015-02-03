@@ -14,6 +14,10 @@ use Eva\EvaSms\Message\TemplateMessage;
 use Eva\EvaSms\Providers\ProviderInterface;
 use Guzzle\Http\Client as HttpClient;
 
+/**
+ * Class Sender
+ * @package Eva\EvaSms
+ */
 class Sender
 {
 
@@ -80,7 +84,13 @@ class Sender
         return true;
     }
 
-    public function sendTemplateMessage($mobileNumber, $templateId, $vars = array())
+    /**
+     * @param $mobileNumber
+     * @param $templateId
+     * @param array $vars
+     * @return mixed
+     */
+    public function sendTemplateMessage($mobileNumber, $templateId, array $vars = array())
     {
         $provider = $this->getProvider();
         if (!$provider) {
@@ -98,6 +108,11 @@ class Sender
         return $provider->sendTemplateMessage($message);
     }
 
+    /**
+     * @param $mobileNumber
+     * @param $messageBody
+     * @return Result\ResultInterface
+     */
     public function sendStandardMessage($mobileNumber, $messageBody)
     {
         $provider = $this->getProvider();
@@ -116,11 +131,18 @@ class Sender
         return $provider->sendStandardMessage($message);
     }
 
+    /**
+     * @return ProviderInterface
+     */
     public function getProvider()
     {
         return $this->provider;
     }
 
+    /**
+     * @param ProviderInterface $provider
+     * @return $this
+     */
     public function setProvider(ProviderInterface $provider)
     {
         $this->provider = $provider;

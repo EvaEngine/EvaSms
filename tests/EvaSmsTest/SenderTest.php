@@ -32,7 +32,11 @@ class SenderTest extends \PHPUnit_Framework_TestCase
 
     public function testMobileValidate()
     {
-
+        $sender = new Sender();
+        $this->assertFalse($sender->isMobileNumberValid('abc'));
+        $this->assertFalse($sender->isMobileNumberValid('+8612345678'));
+        $this->assertFalse($sender->isMobileNumberValid('+abc'));
+        $this->assertTrue($sender->isMobileNumberValid('+8618512345678'));
     }
 }
 
