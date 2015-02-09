@@ -1,5 +1,9 @@
 # EvaSms
 
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/EvaEngine/EvaSms/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/EvaEngine/EvaSms/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/EvaEngine/EvaSms/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/EvaEngine/EvaSms/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/EvaEngine/EvaSms/badges/build.png?b=master)](https://scrutinizer-ci.com/g/EvaEngine/EvaSms/build-status/master)
+
 统一接口设计的短信发送库。
 
 支持以下第三方短信接口服务：
