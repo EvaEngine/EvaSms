@@ -3,7 +3,7 @@
     "require": {
         "guzzle/guzzle": "v3.8.1"
     },
-    "license": "MIT",
+    "license": "New-BSD",
     "autoload": {
         "psr-4" : {
             "Eva\\EvaSms\\" : "src/EvaSms"

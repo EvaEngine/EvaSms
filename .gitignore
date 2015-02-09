@@ -2,3 +2,6 @@
 /.idea/
 composer.lock
 /examples/
+.DS_Store
+**/.DS_Store
+tests/report/**

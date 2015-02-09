@@ -21,6 +21,45 @@ class SenderTest extends \PHPUnit_Framework_TestCase
         $sender->sendStandardMessage('+8615200000000', 'test');
     }
 
+    /**
+     * @expectedException  \RuntimeException
+     */
+    public function testNoProvider()
+    {
+        $sender = new Sender();
+        $sender->sendStandardMessage('+8615200000000', 'test');
+    }
+
+    /**
+     * @expectedException Eva\EvaSms\Exception\InvalidNumberException
+     */
+    public function testNumberInvalid()
+    {
+        $sender = new Sender();
+        $sender->setProvider(new Submail('appid', 'appkey'));
+        $sender->sendStandardMessage('abc', 'test');
+    }
+
+    /**
+     * @expectedException  \RuntimeException
+     */
+    public function testNoProviderForTemplate()
+    {
+        $sender = new Sender();
+        $sender->sendTemplateMessage('+8615200000000', 'test');
+    }
+
+    /**
+     * @expectedException Eva\EvaSms\Exception\InvalidNumberException
+     */
+    public function testNumberInvalidForTemplate()
+    {
+        $sender = new Sender();
+        $sender->setProvider(new Submail('appid', 'appkey'));
+        $sender->sendTemplateMessage('abc', 'test');
+    }
+
+
     public function testClientTimeout()
     {
         $sender = new Sender();
