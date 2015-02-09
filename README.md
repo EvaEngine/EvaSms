@@ -2,7 +2,7 @@
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/EvaEngine/EvaSms/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/EvaEngine/EvaSms/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/EvaEngine/EvaSms/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/EvaEngine/EvaSms/?branch=master)
-[![Build Status](https://api.travis-ci.org/EvaEngine/EvaSms.svg)](https://api.travis-ci.org/EvaEngine/EvaSms.svg)
+[![Build Status](https://travis-ci.org/EvaEngine/EvaSms.svg?branch=master)](https://travis-ci.org/EvaEngine/EvaSms)
 
 统一接口设计的短信发送库。
 
