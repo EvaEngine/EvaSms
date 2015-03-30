@@ -65,7 +65,7 @@ class SenderTest extends \PHPUnit_Framework_TestCase
         $sender = new Sender();
         $sender::setDefaultTimeout(2);
         $client = $sender::getHttpClient();
-        $this->assertInstanceOf('Guzzle\Http\Client', $client);
+        $this->assertInstanceOf('GuzzleHttp\Client', $client);
         $this->assertEquals(2, $client->getDefaultOption('timeout'));
     }
 

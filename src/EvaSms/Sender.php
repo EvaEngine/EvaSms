@@ -12,7 +12,7 @@ use Eva\EvaSms\Exception\InvalidNumberException;
 use Eva\EvaSms\Message\StandardMessage;
 use Eva\EvaSms\Message\TemplateMessage;
 use Eva\EvaSms\Providers\ProviderInterface;
-use Guzzle\Http\Client as HttpClient;
+use GuzzleHttp\Client as HttpClient;
 
 /**
  * Class Sender

@@ -4,7 +4,7 @@ namespace Eva\EvaSmsTest\ResultTest;
 
 use Eva\EvaSms\Message\StandardMessage;
 use Eva\EvaSms\Result\StandardResult;
-use Guzzle\Http\Message\Response;
+use GuzzleHttp\Message\Response;
 
 class StandardResultTest extends \PHPUnit_Framework_TestCase
 {

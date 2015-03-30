@@ -1,7 +1,7 @@
 {
     "name": "evaengine/eva-sms",
     "require": {
-        "guzzle/guzzle": "v3.8.1"
+        "guzzlehttp/guzzle": "5.2.*"
     },
     "license": "New-BSD",
     "autoload": {
