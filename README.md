@@ -3,7 +3,7 @@
 [![Latest Stable Version](https://poser.pugx.org/evaengine/eva-sms/v/stable.svg)](https://packagist.org/packages/evaengine/eva-sms)
 [![License](https://poser.pugx.org/evaengine/eva-sms/license.svg)](https://packagist.org/packages/evaengine/eva-sms)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/EvaEngine/EvaSms/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/EvaEngine/EvaSms/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/EvaEngine/EvaSms/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/EvaEngine/EvaSms/?branch=master)
+[![Coverage Status](https://coveralls.io/repos/EvaEngine/EvaSms/badge.svg?branch=master)](https://coveralls.io/r/EvaEngine/EvaSms?branch=master)
 [![Build Status](https://travis-ci.org/EvaEngine/EvaSms.svg?branch=master)](https://travis-ci.org/EvaEngine/EvaSms)
 
 统一接口设计的短信发送库。
