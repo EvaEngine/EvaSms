@@ -14,8 +14,11 @@ class StandardResultTest extends \PHPUnit_Framework_TestCase
 
     public function testResult()
     {
-        $result = new StandardResult(new StandardMessage('+8615212345678', 'MessageBody'), new Response(200));
+        $message = new StandardMessage('+8615212345678', 'MessageBody');
+        $result = new StandardResult($message, new Response(200));
         $this->assertTrue(is_numeric($result->getSentTimestamp()));
+        $this->assertJson($result->__toString());
+        $this->assertJson($message->__toString());
     }
 }
 
