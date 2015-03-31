@@ -47,6 +47,10 @@ class Sender
     public static function setDefaultTimeout($timeout)
     {
         self::$defaultTimeout = $timeout;
+
+        if (self::$httpClient) {
+            self::$httpClient->setDefaultOption('timeout', $timeout);
+        }
     }
 
     /**
@@ -55,6 +59,7 @@ class Sender
     public static function setDefaultCountryCode($countryCode)
     {
         self::$defaultCountryCode = $countryCode;
+
     }
 
     /**
