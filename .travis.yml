@@ -10,3 +10,6 @@ before_script:
 
 script:
   phpunit -v
+
+after_script:
+  - ./vendor/bin/coveralls -v
