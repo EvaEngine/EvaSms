@@ -1,10 +1,9 @@
 <?php
 namespace Eva\EvaSmsTest\ResultTest;
 
-
 use Eva\EvaSms\Message\StandardMessage;
 use Eva\EvaSms\Result\StandardResult;
-use GuzzleHttp\Message\Response;
+use GuzzleHttp\Psr7\Response;
 
 class StandardResultTest extends \PHPUnit_Framework_TestCase
 {
@@ -21,4 +20,3 @@ class StandardResultTest extends \PHPUnit_Framework_TestCase
         $this->assertJson($message->__toString());
     }
 }
-

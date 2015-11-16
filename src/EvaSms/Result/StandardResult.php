@@ -9,7 +9,7 @@
 namespace Eva\EvaSms\Result;
 
 use Eva\EvaSms\Message\MessageInterface;
-use GuzzleHttp\Message\Response;
+use GuzzleHttp\Psr7\Response;
 
 /**
  * Class StandardResult
@@ -139,7 +139,7 @@ class StandardResult implements ResultInterface
         $result = array(
             'message' => (string) $this->getMessage(),
             'sentTime' => $this->sentTimestamp,
-            'result' => (string) $this->getRawResponse(),
+            'result' => $this->getRawResponse(),
         );
 
         return json_encode($result);

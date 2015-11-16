@@ -9,7 +9,7 @@
 namespace Eva\EvaSms\Result;
 
 use Eva\EvaSms\Message\MessageInterface;
-use GuzzleHttp\Message\Response;
+use GuzzleHttp\Psr7\Response;
 
 /**
  * Interface ResultInterface

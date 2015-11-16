@@ -11,8 +11,16 @@ class SenderTest extends \PHPUnit_Framework_TestCase
     {
     }
 
+    public function testClientTimeout()
+    {
+        $sender = new Sender();
+        $client = $sender::getHttpClient();
+        $this->assertInstanceOf('GuzzleHttp\Client', $client);
+        $this->assertEquals(1, $client->getConfig('timeout'));
+    }
+
     /**
-     * @expectedException Eva\EvaSms\Exception\UnsupportedException
+     * @expectedException \Eva\EvaSms\Exception\UnsupportedException
      */
     public function testUnsupportMessageType()
     {
@@ -31,7 +39,7 @@ class SenderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Eva\EvaSms\Exception\InvalidNumberException
+     * @expectedException \Eva\EvaSms\Exception\InvalidNumberException
      */
     public function testNumberInvalid()
     {
@@ -50,7 +58,7 @@ class SenderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Eva\EvaSms\Exception\InvalidNumberException
+     * @expectedException \Eva\EvaSms\Exception\InvalidNumberException
      */
     public function testNumberInvalidForTemplate()
     {
@@ -59,15 +67,6 @@ class SenderTest extends \PHPUnit_Framework_TestCase
         $sender->sendTemplateMessage('abc', 'test');
     }
 
-
-    public function testClientTimeout()
-    {
-        $sender = new Sender();
-        $sender::setDefaultTimeout(2);
-        $client = $sender::getHttpClient();
-        $this->assertInstanceOf('GuzzleHttp\Client', $client);
-        $this->assertEquals(2, $client->getDefaultOption('timeout'));
-    }
 
     public function testMobileValidate()
     {

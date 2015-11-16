@@ -9,15 +9,12 @@
 namespace Eva\EvaSms\Providers;
 
 use Eva\EvaSms\Exception\InvalidNumberException;
-use Eva\EvaSms\Exception\UnsupportedCountryException;
 use Eva\EvaSms\Exception\UnsupportedException;
-use Eva\EvaSms\Message\MessageInterface;
 use Eva\EvaSms\Message\StandardMessage;
 use Eva\EvaSms\Message\TemplateMessage;
 use Eva\EvaSms\Result\ResultInterface;
 use Eva\EvaSms\Result\StandardResult;
 use Eva\EvaSms\Sender;
-use Guzzle\Http\Client;
 
 /**
  * Class Submail
@@ -59,7 +56,7 @@ class Submail implements ProviderInterface
 
     /**
      * @param TemplateMessage $message
-     * @return StandResult
+     * @return StandardResult
      */
     public function sendTemplateMessage(TemplateMessage $message)
     {
@@ -99,8 +96,8 @@ class Submail implements ProviderInterface
         */
 
         $client = Sender::getHttpClient();
-        $response = $client->post(self::API_URL, array('body' => $params));
-        $responseArr = $response->json();
+        $response = $client->post(self::API_URL, array('form' => $params));
+        $responseArr = json_decode($response->getBody(), true);
         $result = new StandardResult($message, $response);
         if (isset($responseArr['status'])) {
             if ($responseArr['status'] == 'success') {
@@ -159,4 +156,3 @@ class Submail implements ProviderInterface
         $this->appkey = $appkey;
     }
 }
-

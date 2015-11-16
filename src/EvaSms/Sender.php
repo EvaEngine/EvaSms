@@ -12,7 +12,7 @@ use Eva\EvaSms\Exception\InvalidNumberException;
 use Eva\EvaSms\Message\StandardMessage;
 use Eva\EvaSms\Message\TemplateMessage;
 use Eva\EvaSms\Providers\ProviderInterface;
-use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\Client;
 
 /**
  * Class Sender
@@ -22,7 +22,7 @@ class Sender
 {
 
     /**
-     * @var HttpClient
+     * @var Client
      */
     protected static $httpClient;
 
@@ -47,10 +47,6 @@ class Sender
     public static function setDefaultTimeout($timeout)
     {
         self::$defaultTimeout = $timeout;
-
-        if (self::$httpClient) {
-            self::$httpClient->setDefaultOption('timeout', $timeout);
-        }
     }
 
     /**
@@ -63,7 +59,7 @@ class Sender
     }
 
     /**
-     * @return HttpClient
+     * @return Client
      */
     public static function getHttpClient()
     {
@@ -71,8 +67,9 @@ class Sender
             return self::$httpClient;
         }
 
-        $client = new HttpClient();
-        $client->setDefaultOption('timeout', self::$defaultTimeout);
+        $client = new Client([
+            'timeout' => self::$defaultTimeout
+        ]);
         return self::$httpClient = $client;
     }
 
@@ -153,6 +150,4 @@ class Sender
         $this->provider = $provider;
         return $this;
     }
-
 }
-

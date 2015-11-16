@@ -3,29 +3,32 @@ namespace Eva\EvaSmsTest\ProvidersTest\SubmailTest;
 
 
 use Eva\EvaSms\Message\TemplateMessage;
-use Eva\EvaSms\Result\StandardResult;
 use Eva\EvaSms\Providers\Submail;
 use Eva\EvaSms\Sender;
-use GuzzleHttp\Subscriber\Mock;
-use GuzzleHttp\Message\Response;
-use GuzzleHttp\Stream\Stream;
+use GuzzleHttp\Handler\MockHandler;
 use Eva\EvaSms\Result\ResultInterface;
+use GuzzleHttp\Psr7\Response;
 
 class SubmailTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var Submail
+     */
+    protected $submail;
+
     public function setUp()
     {
-        $this->mock = new Mock([
-            new Response(200, ['Content-Type' => 'javascript'], Stream::factory('{"status":"success"}')),
-            new Response(200, ['Content-Type' => 'javascript'], Stream::factory('{"status":"error"}'))
-        ]);
         $this->submail = new Submail('key', 'secret');
+    }
+
+    protected function mock(Response $response)
+    {
         $client = Sender::getHttpClient();
-        $client->getEmitter()->attach($this->mock);
+        $client->getConfig('handler')->setHandler(new MockHandler([$response]));
     }
 
     /**
-     * @expectedException Eva\EvaSms\Exception\UnsupportedException
+     * @expectedException \Eva\EvaSms\Exception\UnsupportedException
      */
     public function testNumberInvalid()
     {
@@ -41,6 +44,7 @@ class SubmailTest extends \PHPUnit_Framework_TestCase
 
     public function testResultSuccess()
     {
+        $this->mock(new Response(200, ['Content-Type' => 'javascript'], '{"status":"success"}'));
         $result = $this->submail->sendTemplateMessage(
             new TemplateMessage(
                 '+8615200000000',
@@ -54,6 +58,7 @@ class SubmailTest extends \PHPUnit_Framework_TestCase
 
     public function testResultError()
     {
+        $this->mock(new Response(200, ['Content-Type' => 'javascript'], '{"status":"error"}'));
         $result = $this->submail->sendTemplateMessage(
             new TemplateMessage(
                 '+8615200000000',

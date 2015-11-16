@@ -1,10 +1,9 @@
 {
     "name": "evaengine/eva-sms",
     "require": {
-        "guzzlehttp/guzzle": "5.2.*"
+        "guzzlehttp/guzzle": "^6"
     },
     "require-dev": {
-        "satooshi/php-coveralls": "dev-master"
     },
     "license": "New-BSD",
     "autoload": {
