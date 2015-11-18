@@ -1,20 +1,21 @@
 {
-    "name": "evaengine/eva-sms",
-    "require": {
-        "guzzlehttp/guzzle": "^6"
-    },
-    "require-dev": {
-    },
-    "license": "New-BSD",
-    "autoload": {
-        "psr-4" : {
-            "Eva\\EvaSms\\" : "src/EvaSms"
-        }
-    },
-    "authors": [
-        {
-            "name": "AlloVince",
-            "email": "allo.vince@gmail.com"
-        }
-    ]
+  "name": "evaengine/eva-sms",
+  "require": {
+    "php": ">=5.5.0",
+    "guzzlehttp/guzzle": "^6"
+  },
+  "require-dev": {
+  },
+  "license": "New-BSD",
+  "autoload": {
+    "psr-4": {
+      "Eva\\EvaSms\\": "src/EvaSms"
+    }
+  },
+  "authors": [
+    {
+      "name": "AlloVince",
+      "email": "allo.vince@gmail.com"
+    }
+  ]
 }
