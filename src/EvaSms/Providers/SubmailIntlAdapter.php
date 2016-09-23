@@ -46,7 +46,7 @@ class SubmailIntlAdapter implements ProviderInterface
      */
     public function isCountrySupported($number)
     {
-        //USA
+        // 需要添加前缀白名单满足美国之外
         if (substr($number, 0, 2) !== '+1') {
             return false;
         }
