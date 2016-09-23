@@ -141,12 +141,12 @@ class Sender
         $config = $this->getDI()->getConfig();
         $adapterMapping = array(
             'submail' => 'Eva\EvaSms\Providers\Submail',
-            'submailIntl' => 'Eva\EvaSms\Providers\SubmailIntlAdapter',
+            'submailintl' => 'Eva\EvaSms\Providers\SubmailIntlAdapter',
         );
         if (substr($mobileNumber, 0, 3) === '+86') {
-            $adapterKey = 'Submail';
+            $adapterKey = 'submail';
         } else {
-            $adapterKey = 'SubmailIntlAdapter';
+            $adapterKey = 'submailintl';
         }
         $adapterKey = false === strpos($adapterKey, '\\') ? strtolower($adapterKey) : $adapterKey;
         $adapterClass = empty($adapterMapping[$adapterKey]) ? $adapterKey : $adapterMapping[$adapterKey];
