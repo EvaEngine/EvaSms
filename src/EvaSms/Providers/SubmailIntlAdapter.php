@@ -1,9 +1,9 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: allovince
- * Date: 15/1/30
- * Time: 上午11:34
+ * User: yuanxiaodan
+ * Date: 9/22/16
+ * Time: 1:57 PM
  */
 
 namespace Eva\EvaSms\Providers;
@@ -17,57 +17,27 @@ use Eva\EvaSms\Message\TemplateMessage;
 use Eva\EvaSms\Result\ResultInterface;
 use Eva\EvaSms\Result\StandardResult;
 use Eva\EvaSms\Sender;
-use Guzzle\Http\Client;
 
-/**
- * Class Submail
- * @package Eva\EvaSms\Providers
- */
-class Submail implements ProviderInterface
+
+class SubmailIntlAdapter implements ProviderInterface
 {
-    /**
-     * SMS sending API
-     */
-    const API_URL = 'https://api.submail.cn/message/xsend.json';
+    const API_URL_INTL = 'https://api.submail.cn/internationalsms/xsend.json';
 
-    /**
-     * @var string
-     */
     protected $appid;
-
-    /**
-     * @var string
-     */
     protected $appkey;
-
-    /**
-     * @var string
-     */
     protected $signature;
 
-    /**
-     * Submail not support stardard message
-     *
-     * @param StandardMessage $message
-     * @return mixed|void
-     */
     public function sendStandardMessage(StandardMessage $message)
     {
-        throw new UnsupportedException(sprintf('Starndard message not supported by provider %s', 'submail'));
+        $this->submailDom->sendStandardMessage($message);
     }
 
-
-    /**
-     * @param TemplateMessage $message
-     * @return StandResult
-     */
     public function sendTemplateMessage(TemplateMessage $message)
     {
         $number = $message->getRecipient();
         if (!$this->isNumberValid($number)) {
             throw new InvalidNumberException(sprintf('Mobile number %s not valid by provider %s', $number, 'submail'));
         }
-
         if (!$this->isCountrySupported($number)) {
             throw new UnsupportedException(sprintf(
                 'Mobile number %s not supported by provider %s',
@@ -75,7 +45,6 @@ class Submail implements ProviderInterface
                 'submail'
             ));
         }
-
         //Raw auth by appkey
         $params = array(
             'appid' => $this->appid,
@@ -84,7 +53,6 @@ class Submail implements ProviderInterface
             'vars' => json_encode($message->getVars()),
             'signature' => $this->appkey,
         );
-
         /*
         $params = array(
             'appid' => $this->appid,
@@ -97,9 +65,8 @@ class Submail implements ProviderInterface
         $signature = $this->getSignature($params);
         $params['signature'] = $signature;
         */
-
         $client = Sender::getHttpClient();
-        $response = $client->post(self::API_URL, array('body' => $params));
+        $response = $client->post(self::API_URL_INTL, array('body' => $params));
         $responseArr = $response->json();
         $result = new StandardResult($message, $response);
         if (isset($responseArr['status'])) {
@@ -112,29 +79,18 @@ class Submail implements ProviderInterface
         return $result;
     }
 
-    /**
-     * @param $params
-     * @return string
-     */
-    public function getSignature($params)
+    protected function getSignature($params)
     {
-        ksort($params);
-        reset($params);
-        $signature = array();
-        foreach ($params as $key => $value) {
-            $signature[] = $key . '=' . $value;
-        }
-        $signature = implode('&', $signature);
-        return md5($this->appid . $this->appkey . $signature . $this->appid . $this->appkey);
+        $this->submailDom->getSignature($params);
     }
 
     /**
      * @param $number
-     * @return bool
+     * @return ResultInterface
      */
     public function isNumberValid($number)
     {
-        return true;
+        return $this->submailDom->isNumberValid($number);
     }
 
     /**
@@ -143,20 +99,21 @@ class Submail implements ProviderInterface
      */
     public function isCountrySupported($number)
     {
-        if (substr($number, 0, 3) !== '+86') {
+        // 需要添加前缀白名单满足美国之外
+        if (substr($number, 0, 2) !== '+1') {
             return false;
         }
         return true;
     }
 
-    /**
-     * @param $appid
-     * @param $appkey
-     */
+    private $submailDom;
+
     public function __construct($appid, $appkey)
     {
+        $submailDom = new Submail($appid, $appkey);
+        $this->submailDom = $submailDom;
         $this->appid = $appid;
         $this->appkey = $appkey;
     }
-}
 
+}

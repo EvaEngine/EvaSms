@@ -8,11 +8,12 @@
 
 namespace Eva\EvaSms;
 
+use Eva\EvaEngine\IoC;
 use Eva\EvaSms\Exception\InvalidNumberException;
 use Eva\EvaSms\Message\StandardMessage;
 use Eva\EvaSms\Message\TemplateMessage;
 use Eva\EvaSms\Providers\ProviderInterface;
-use GuzzleHttp\Client;
+use GuzzleHttp\Client as HttpClient;
 
 /**
  * Class Sender
@@ -22,7 +23,7 @@ class Sender
 {
 
     /**
-     * @var Client
+     * @var HttpClient
      */
     protected static $httpClient;
 
@@ -47,6 +48,10 @@ class Sender
     public static function setDefaultTimeout($timeout)
     {
         self::$defaultTimeout = $timeout;
+
+        if (self::$httpClient) {
+            self::$httpClient->setDefaultOption('timeout', $timeout);
+        }
     }
 
     /**
@@ -55,11 +60,10 @@ class Sender
     public static function setDefaultCountryCode($countryCode)
     {
         self::$defaultCountryCode = $countryCode;
-
     }
 
     /**
-     * @return Client
+     * @return HttpClient
      */
     public static function getHttpClient()
     {
@@ -67,9 +71,8 @@ class Sender
             return self::$httpClient;
         }
 
-        $client = new Client([
-            'timeout' => self::$defaultTimeout
-        ]);
+        $client = new HttpClient();
+        $client->setDefaultOption('timeout', self::$defaultTimeout);
         return self::$httpClient = $client;
     }
 
@@ -94,19 +97,17 @@ class Sender
      */
     public function sendTemplateMessage($mobileNumber, $templateId, array $vars = array())
     {
-        $provider = $this->getProvider();
+        $provider = $this->getProvider($mobileNumber);
         if (!$provider) {
             throw new \RuntimeException('No provider found');
         }
 
         $mobileNumber = $mobileNumber{0} === '+' ? $mobileNumber : self::$defaultCountryCode . $mobileNumber;
-
         if (!self::isMobileNumberValid($mobileNumber)) {
             throw new InvalidNumberException(sprintf("Mobile number %s invalid", $mobileNumber));
         }
 
         $message = new TemplateMessage($mobileNumber, $templateId, $vars);
-
         return $provider->sendTemplateMessage($message);
     }
 
@@ -117,7 +118,7 @@ class Sender
      */
     public function sendStandardMessage($mobileNumber, $messageBody)
     {
-        $provider = $this->getProvider();
+        $provider = $this->getProvider($mobileNumber);
         if (!$provider) {
             throw new \RuntimeException('No provider found');
         }
@@ -136,9 +137,29 @@ class Sender
     /**
      * @return ProviderInterface
      */
-    public function getProvider()
+    public function getProvider($mobileNumber)
     {
-        return $this->provider;
+        $config = IoC::get('config');
+        $adapterMapping = array(
+            'submail' => 'Eva\EvaSms\Providers\Submail',
+            'submailintl' => 'Eva\EvaSms\Providers\SubmailIntlAdapter',
+        );
+        if (substr($mobileNumber, 0, 3) === '+86') {
+            $adapterKey = 'submail';
+        } else {
+            $adapterKey = 'submailintl';
+        }
+        $adapterKey = false === strpos($adapterKey, '\\') ? strtolower($adapterKey) : $adapterKey;
+        $adapterClass = empty($adapterMapping[$adapterKey]) ? $adapterKey : $adapterMapping[$adapterKey];
+        if (false === class_exists($adapterClass)) {
+            throw new Exception\RuntimeException(sprintf('No sms provider found by %s', $adapterClass));
+        }
+        if ($adapterKey === 'submailintl') {
+            $provider = new $adapterClass($config->smsSenderIntl->appid, $config->smsSenderIntl->appkey);
+        } else {
+            $provider = new $adapterClass($config->smsSender->appid, $config->smsSender->appkey);
+        }
+        return $provider;
     }
 
     /**
@@ -150,4 +171,6 @@ class Sender
         $this->provider = $provider;
         return $this;
     }
+
 }
+
