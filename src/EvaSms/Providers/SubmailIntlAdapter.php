@@ -88,11 +88,17 @@ class SubmailIntlAdapter implements ProviderInterface
      */
     public function isCountrySupported($number)
     {
-        // 需要添加前缀白名单满足美国之外
-        if (substr($number, 0, 2) !== '+1') {
-            return false;
+        $config = include('config.php');
+        $values = array_values($config['Phone_Prefix']);
+        //1 because '+' is ignored in searching
+        if (in_array(substr($number, 1, 1), $values, true)
+            or in_array(substr($number, 1, 2), $values, true)
+            or in_array(substr($number, 1, 3), $values, true)
+            or in_array(substr($number, 1, 4), $values, true)
+            or in_array(substr($number, 1, 5), $values, true)) {
+            return true;
         }
-        return true;
+        return false;
     }
 
     private $submailDom;
