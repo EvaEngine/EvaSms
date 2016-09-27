@@ -1,5 +1,5 @@
 {
-  "name": "evaengine/eva-sms",
+  "name": "wallstreetcn/eva-sms",
   "require": {
     "php": ">=5.5.0",
     "guzzlehttp/guzzle": "^6"
